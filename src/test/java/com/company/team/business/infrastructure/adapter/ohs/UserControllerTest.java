@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,6 +18,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+/**
+ * 验证Controller的执行逻辑，Controller中@Autowire引用的类可以使用@MockBean来代替
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -46,7 +47,12 @@ class UserControllerTest {
 
         when(userApplicationService.findById(anyInt())).thenReturn(User.builder().id(id).name(name).build());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", id).accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.data.id").value(id)).andExpect(jsonPath("$.data.name").value(name)).andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/{id}", id)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.data.id").value(id))
+                .andExpect(jsonPath("$.data.name").value(name))
+                .andReturn();
     }
 
     @Test
@@ -56,7 +62,13 @@ class UserControllerTest {
 
         when(userApplicationService.findById(anyInt())).thenReturn(User.builder().id(id).name(name).build());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users").accept(MediaType.APPLICATION_JSON_VALUE).param("id", String.valueOf(id))).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.data.id").value(id)).andExpect(jsonPath("$.data.name").value(name)).andReturn();
+        mockMvc.perform(MockMvcRequestBuilders.get("/users")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .param("id", String.valueOf(id)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.data.id").value(id))
+                .andExpect(jsonPath("$.data.name").value(name))
+                .andReturn();
     }
 
     @Test
@@ -66,7 +78,14 @@ class UserControllerTest {
 
         when(userApplicationService.findById(anyInt())).thenReturn(User.builder().id(id).name(name).build());
 
-        String result = mockMvc.perform(MockMvcRequestBuilders.get("/users/list").accept(MediaType.APPLICATION_JSON_VALUE).param("id", String.valueOf(id))).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.data.length()").value(1)).andExpect(jsonPath("$.data[0].id").value(id)).andExpect(jsonPath("$.data[0].name").value(name)).andReturn().getResponse().getContentAsString();
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/users/list")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .param("id", String.valueOf(id)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(1))
+                .andExpect(jsonPath("$.data[0].id").value(id))
+                .andExpect(jsonPath("$.data[0].name").value(name))
+                .andReturn().getResponse().getContentAsString();
 
         System.out.println("result: " + result);
     }
