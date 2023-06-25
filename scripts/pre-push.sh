@@ -3,9 +3,9 @@
 set -eu
 
 get_branch=`git symbolic-ref --short -q HEAD`
-echo $get_branch
+echo 'current branch: ' $get_branch
 
-echo 'start run check style'
+echo 'start run checkstyle'
 ./gradlew checkstyleMain
 
 echo 'start run test'
