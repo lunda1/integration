@@ -1,6 +1,6 @@
 package com.company.team.business.infrastructure.adapter.acl;
 
-import com.company.team.business.infrastructure.feign.ThirdFeignClient;
+import com.company.team.business.infrastructure.feign.ThirdPartyFeignClient;
 import com.company.team.business.infrastructure.adapter.acl.dto.req.FindNewLeadsReq;
 import com.company.team.business.infrastructure.adapter.acl.dto.req.FindRetentionLeadsReq;
 import com.company.team.business.infrastructure.adapter.acl.dto.res.FindNewLeadsRes;
@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ThirdAdapter {
+public class ThirdPartyAdapter {
 
-    ThirdFeignClient thirdFeignClient;
+    ThirdPartyFeignClient thirdPartyFeignClient;
 
-    public ThirdAdapter(ThirdFeignClient thirdFeignClient) {
-        this.thirdFeignClient = thirdFeignClient;
+    public ThirdPartyAdapter(ThirdPartyFeignClient thirdFeignClient) {
+        this.thirdPartyFeignClient = thirdFeignClient;
     }
 
     public FindNewLeadsRes findNewLeads(FindNewLeadsReq req) {
-        return thirdFeignClient.findNewLeads(req);
+        return thirdPartyFeignClient.findNewLeads(req);
     }
 
     public FindRetentionLeadsRes findRetentionLeads(FindRetentionLeadsReq req) {
-        return thirdFeignClient.findRetentionLeads(req);
+        return thirdPartyFeignClient.findRetentionLeads(req);
     }
 }

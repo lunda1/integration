@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "mock-third-remote-service", url = "http://localhost:8080/integration/mock/third")
-public interface ThirdFeignClient {
+@FeignClient(name = "mock-third-party-remote-service", url = "http://localhost:8080/integration/third-party/mock")
+public interface ThirdPartyFeignClient {
 
     @GetMapping("/findNewLeads")
     FindNewLeadsRes findNewLeads(@RequestBody FindNewLeadsReq req);

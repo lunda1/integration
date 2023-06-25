@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mock/third")
+@RequestMapping("/third-party/mock")
 @Validated
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "ThirdMockController")
-public class ThirdMockController {
+@Tag(name = "ThirdPartyMockController")
+public class ThirdPartyMockController {
 
     @PostMapping("/findNewLeads")
     public FindNewLeadsRes findNewLeads(@RequestBody FindNewLeadsReq req) {
