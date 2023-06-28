@@ -1,8 +1,9 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.11'
+    id 'org.springframework.boot' version '2.7.13'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'checkstyle'
+    id 'jacoco'
 }
 
 checkstyle {
@@ -22,6 +23,12 @@ repositories {
 
 ext {
     set('springCloudVersion', "2021.0.7") //cloud版本需要与springboot匹配：https://spring.io/projects/spring-cloud
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
@@ -61,12 +68,37 @@ dependencies {
 
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+test {
+    ignoreFailures = false
+    finalizedBy jacocoTestReport
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [
+                            'com/company/business/crm/common/Result**',
+                            'com/company/business/crm/common/GlobalExceptionHandler**',
+                            'com/company/business/crm/common/SpringDocConfig**',
+                            'com/company/business/crm/domain/repository/**',
+                            'com/company/business/crm/infrastructure/adapter/acl/dto/**',
+                            'com/company/business/crm/infrastructure/adapter/ohs/dto/**',
+                            'com/company/business/crm/infrastructure/mock/**'
+                    ])
+        }))
     }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+jacocoTestCoverageVerification {
+    dependsOn test // tests are required to run before generating the report
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7
+            }
+        }
+    }
 }
