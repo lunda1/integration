@@ -1,0 +1,1 @@
+ALTER TABLE user_account ADD COLUMN test_id INTEGER AFTER name;

@@ -1,0 +1,17 @@
+# yaml 配置实例
+version: '3'
+services:
+  redis:
+      image: redis:7.0.12
+      container_name: my-redis
+  rabbitmq:
+      image: rabbitmq:3.11-management
+      container_name: my-rabbitmq
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      environment:
+        RABBITMQ_DEFAULT_USER: admin
+        RABBITMQ_DEFAULT_PASS: 123456
+      depends_on:
+        - redis
