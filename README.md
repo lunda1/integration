@@ -41,8 +41,8 @@ Run following command on master branch
 ```bash
 docker search mysql
 docker pull mysql
-docker run  --name my-mysql8 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql
-docker exec my-mysql8 -it /bin/bash
+docker run  --name integration-mysql8 -p 13306:13306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+docker exec -it integration-mysql8 /bin/bash
 mysql -u root -p
 create database demo_mysql
 
